@@ -1,0 +1,29 @@
+; dinput8.def - export list for the DirectInput8 proxy.
+;
+; DirectInput8Create is OUR wrapper (dinput8_proxy.cpp): it calls the real function resolved
+; from the renamed real DLL, dinput8_orig.dll, and then patches IDirectInput8 /
+; IDirectInputDevice8 so the head can steer the right stick.
+;
+; The other five names are the rest of the real DLL's export table, and they are FORWARDED
+; straight to it rather than reimplemented. A same-named proxy has to answer for the whole
+; export table, not only the one function the game's import table happens to name: another
+; loader in the process (Steam's overlay is the known one) may call GetProcAddress for these,
+; and a proxy that returns NULL for them changes behaviour for code that has nothing to do
+; with us. The real DLL exports exactly these six names, verified by reading the export table
+; of C:\Windows\SysWOW64\dinput8.dll.
+;
+; Two shapes of forwarding were tried for DirectInput8Create itself and both are wrong, which
+; is why this file no longer lists it as a forward:
+;   * a linker forwarder (/export:DirectInput8Create=dinput8_orig.DirectInput8Create) points the
+;     export straight at the real DLL, so our wrapper never runs at all (the harness showed
+;     DirectInput8Create succeeding with no vtable patch ever logged);
+;   * listing it here TOGETHER with that forwarder made the linker prefer this file
+;     (warning LNK4197) and drop the reference to the real DLL entirely.
+LIBRARY dinput8
+EXPORTS
+    DirectInput8Create
+    GetdfDIJoystick=dinput8_orig.GetdfDIJoystick
+    DllGetClassObject=dinput8_orig.DllGetClassObject
+    DllCanUnloadNow=dinput8_orig.DllCanUnloadNow
+    DllRegisterServer=dinput8_orig.DllRegisterServer
+    DllUnregisterServer=dinput8_orig.DllUnregisterServer

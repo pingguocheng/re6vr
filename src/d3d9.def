@@ -1,0 +1,25 @@
+; d3d9.def - export list for the proxy DLL.
+;
+; Every export is implemented in d3d9_proxy.cpp and forwarded to the real
+; system d3d9.dll through pointers resolved at load time. We deliberately do
+; NOT use linker forwarders: on a 32-bit process a forward like
+; "C:\Windows\System32\d3d9.dll".X is resolved through the WOW64 redirection
+; and is fragile, whereas GetProcAddress with LOAD_LIBRARY_SEARCH_SYSTEM32 is
+; unambiguous.
+LIBRARY d3d9
+EXPORTS
+    Direct3DCreate9
+    Direct3DCreate9Ex
+    D3DPERF_BeginEvent
+    D3DPERF_EndEvent
+    D3DPERF_GetStatus
+    D3DPERF_QueryRepeatFrame
+    D3DPERF_SetMarker
+    D3DPERF_SetOptions
+    D3DPERF_SetRegion
+    DebugSetLevel
+    DebugSetMute
+    Direct3D9EnableMaximizedWindowedModeShim
+    Direct3DShaderValidatorCreate9
+    PSGPError
+    PSGPSampleTexture

@@ -1,0 +1,25 @@
+# 构建产物 / 中间文件（本地构建，不进仓库）
+build/
+dist/
+*.obj
+*.pyc
+__pycache__/
+*.pdb
+*.exp
+*.lib
+*.ilk
+
+# 运行期证据：体积大，且含本机绝对路径（每局日志、崩溃记录、逐帧 dump）
+_work/_archive/
+_work/_gamefolder/
+_work/harness_log/
+_work/*.log
+_work/*.txt
+_work/*.bgra
+_logs/
+*.bgra
+*.log
+
+# 项目快照与第三方二进制（由 scripts/stage_deps.py 现场下载）
+_snapshots/
+_third_party/
